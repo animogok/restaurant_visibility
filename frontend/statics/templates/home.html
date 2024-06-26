@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <nav>
+        <a href="">RESTAURANTS</a>
+        {% if request.user.is_authenticated %}
+            <a href="">CREATE</a>
+            <a href="">SETTINGS</a>
+        {% else %}
+            <a href="">REGISTER</a>
+            <a href="">LOGIN</a>
+        {% endif %}
+    </nav>
+
+    <main>
+    </main>
+
+    <footer></footer>
+</body>
+</html>
