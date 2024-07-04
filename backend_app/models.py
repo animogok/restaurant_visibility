@@ -10,6 +10,12 @@ For other database models, I will create its models right below this comments be
 using foreign keys.
 '''
 
+#This class will be directly related to the User model, the principal action that this class will do, it's to ensure the email verification of every user
+class UserVerification(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    email_verification = models.EmailField(blank=False)
+    account_validate = models.BooleanField(default=False)
+    
 #This class will be related by a foreign key to the user instance who created the admin-account.
 class RestaurantInfo_DBModel(models.Model):
     user_Instance = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -28,9 +34,7 @@ class RestaurantInfo_DBModel(models.Model):
         #We get the field to validate if theres is any other subStaff. If the result equals to False we set the camp to True making reference at the first subStaff
         if RestaurantInfo_DBModel.objects.get(id = id_restaurant).restaurant_subStaffOwner == False:
             RestaurantInfo_DBModel.objects.filter(id = id_restaurant).update(estaurant_subStaffOwner = True)
-        
         Q_subStaff =  RestaurantInfo_DBModel.objects.get(id = id_restaurant).restaurant_subStaffOwner_Q
-        
         RestaurantInfo_DBModel.objects.filter(id = id_restaurant).update(restaurant_subStaffOwner_Q = (Q_subStaff + 1))
         
 #This class will be related to an instance of one created account that have a reference with a restaurant

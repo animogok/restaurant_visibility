@@ -9,7 +9,13 @@
     <main>
         <form method="POST">
             {% csrf_token %}
-            
+            {{form.as_p}}
+            {% block error_password %}
+                {% if error %}
+                    <p>password mismatch</p>
+                {% endif %}
+            {% endblock error_password %}
+            <button class="submit" type="submit">Create Account</button>
         </form>
     </main>
 </body>

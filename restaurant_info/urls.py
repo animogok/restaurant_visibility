@@ -16,7 +16,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from backend_app import views as vwB
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('SignUp/', vwB.AsyncRegisterView.as_view(), name="register"),
 ]
