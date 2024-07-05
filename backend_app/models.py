@@ -14,7 +14,6 @@ using foreign keys.
 class UserVerification(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     email_verification = models.EmailField(blank=False)
-    account_validate = models.BooleanField(default=False)
     
 #This class will be related by a foreign key to the user instance who created the admin-account.
 class RestaurantInfo_DBModel(models.Model):

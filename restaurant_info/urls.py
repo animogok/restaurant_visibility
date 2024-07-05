@@ -18,7 +18,15 @@ from django.contrib import admin
 from django.urls import path
 from backend_app import views as vwB
 
+#This imports will be required for working jwt encoding and decoding to the email verifications implementation
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('SignUp/', vwB.AsyncRegisterView.as_view(), name="register"),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

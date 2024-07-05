@@ -6,6 +6,7 @@ from asgiref.sync import sync_to_async
 
 from .mixins import create_or_get_RRG
 from .forms import User_Registration
+from .serializer import UserDataSerializer
 
 #This CBV (class based view ) will action as receiving  data from the frontend, will make sure to load the template for the working form
 class AsyncRegisterView(View):
@@ -19,19 +20,40 @@ class AsyncRegisterView(View):
     def post(self, request, *args, **kwargs):
         form = User_Registration(self.request.POST)
         if form.is_valid():
-            if form.cleaned_data['password1'] != form.cleaned_data['password2']:
-                return render(request, self.template, {'form': form, 'error': True})
-            raw_password = form.cleaned_data["password1"]
-            user = User.objects.create(username=form.cleaned_data["username"], first_name=form.cleaned_data["first_name"], 
-                                       last_name=form.cleaned_data["last_name"],
-                                       email = form.cleaned_data["email"],
-                                       password = User.set_password(raw_password=raw_password),
-                                       is_active = False
-                                       )
-            user.asave()
-            #Generar un redirect a la pagina de login.
-            #El status code predeterminado es el 302
+            serializer = UserDataSerializer(data=self.request.data)
+            if serializer.is_valid():
+                if serializer.data['password'] != serializer.data['password_confirmation']:
+                    return render(request, self.template, {'form': form, 'error': True})
+                serializer.save()
+                user = User.objects.get(username = serializer.data["username"])
+                user.set_password(raw_password=serializer.data["password"])
+                user.save()
+                
+                #Generar la redireccion, ademas buscar la informacion referente a si los datos "no verificados" se deben de eliminar o dejar ahi
+                #En caso de eliminar, generar en esta clase las formas correspondientes para poder hacer eso.
+                
+                #Ver si se puede agrear el id_user al header en la redireccion por el 302, en caso de que se pueda, extraer ese header y aplicar con la verificacion
+                
+                #En caso de que no se pueda, generar la serializacion por token y ponerlo en el header, y generar el mismo procedimiento.
+                
         return render(request, self.template, {'form': form})
 
+class AsyncVerification(View):
+    template = 'email_verification.html'
+   
+    
+    def get(self,request, *args, **kwargs):
+        form = '' #agregar formulario en forms.py
+        return render(request, self.template, {"form" : form})
+    
+    @method_decorator(sync_to_async)
+    def post(self, request, *args, **kwargs):
+        form = '' #agregar formulario en forms.py
+        user_id = "" #Extraer el header
+        
+        if form.is_valid():
+            #Verificar si el usuario existe, en caso de que no, generar un error y red
+            pass
+        
 class AsyncLoginView(View):
     template = 'login.html'
