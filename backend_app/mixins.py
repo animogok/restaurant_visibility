@@ -1,5 +1,7 @@
 from django.contrib.auth.models import Group, Permission
 from django.contrib.contenttypes.models import ContentType
+
+from restaurant_info import settings
 from .models import RestaurantInfo_DBModel
 
 '''
@@ -37,18 +39,21 @@ from datetime import timedelta,datetime
 from .models import UserVerification
 from django.core.exceptions import ValidationError
 from django.shortcuts import get_object_or_404
+from hashid_field import Hashid
 
-CURRENT_TIME = datetime.now
-SIX_DIGIT_TIME = timedelta(minutes=5)
+CURRENT_TIME = datetime.now()
 
-class Six_digit_Gen_Val():
+class Six_digit_Gen_Val:
+    h = Hashid(settings.hash_field_salt)
+    code =random.randint(100000, 999999)
     
     def generator(self):
         values = {
-            'six_digits_code' : random.randint(100000, 999999),
-            'current_time' : CURRENT_TIME,
-            'exp_time' : CURRENT_TIME + SIX_DIGIT_TIME
+            'six_digits_code' : str(self.h.encode(id=self.code)),
+            'current_time' : str(CURRENT_TIME.strftime("%d,%m,%H,%M")),
+            'exp_time' : str((CURRENT_TIME + timedelta(minutes=5))).strftime("%d,%m,%H,%M")
         }
+  
         return values
         
     def validator(self, values : dict, user_id : int):
@@ -56,6 +61,10 @@ class Six_digit_Gen_Val():
         if (CURRENT_TIME) >= values.get("exp_time"):
             raise ValidationError
         
-        user_email_camp = get_object_or_404(UserVerification, user = user_id)
-        user_email_camp.email_verification = True
-        user_email_camp.asave()
+        else:
+            user_email_camp = get_object_or_404(UserVerification, user = user_id)
+            user_email_camp.email_verification = True
+            user_email_camp.asave()
+
+hola = Six_digit_Gen_Val()
+print(hola.generator())
