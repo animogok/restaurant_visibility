@@ -55,16 +55,3 @@ class Six_digit_Gen_Val:
         }
   
         return values
-        
-    def validator(self, values : dict, user_id : int):
-
-        if (CURRENT_TIME) >= values.get("exp_time"):
-            raise ValidationError
-        
-        else:
-            user_email_camp = get_object_or_404(UserVerification, user = user_id)
-            user_email_camp.email_verification = True
-            user_email_camp.asave()
-
-hola = Six_digit_Gen_Val()
-print(hola.generator())
