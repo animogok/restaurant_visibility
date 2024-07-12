@@ -13,7 +13,7 @@ using foreign keys.
 #This class will be directly related to the User model, the principal action that this class will do, it's to ensure the email verification of every user
 class UserVerification(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    email_verification = models.EmailField(blank=False)
+    email_verification = models.BooleanField(blank=False, default=False)
     
 #This class will be related by a foreign key to the user instance who created the admin-account.
 class RestaurantInfo_DBModel(models.Model):

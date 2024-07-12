@@ -26,32 +26,4 @@ def create_or_get_RRG():
     group_RRG.permissions.set(permissions)
     
 
-'''
-This class will be taking care of a simple email verification via six_digit_number.
-
-This will using two simple methods, one of the methods will generate the code and other information, moreover the second method will
-validate the data by making use of the current time and the max expiration time, if it's true, the field in bd that specifies the email verification, will be on True
-'''
-
-import random
-from datetime import timedelta,datetime
-
-from .models import UserVerification
-from django.core.exceptions import ValidationError
-from django.shortcuts import get_object_or_404
-from hashid_field import Hashid
-
-CURRENT_TIME = datetime.now()
-
-class Six_digit_Gen_Val:
-    h = Hashid(settings.hash_field_salt)
-    code =random.randint(100000, 999999)
-    
-    def generator(self):
-        values = {
-            'six_digits_code' : str(self.h.encode(id=self.code)),
-            'current_time' : str(CURRENT_TIME.strftime("%d,%m,%H,%M")),
-            'exp_time' : str((CURRENT_TIME + timedelta(minutes=5))).strftime("%d,%m,%H,%M")
-        }
-  
-        return values
+        

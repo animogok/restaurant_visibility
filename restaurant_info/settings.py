@@ -30,7 +30,7 @@ ALLOWED_HOSTS = []
 
 # Application definition
 
-hash_field_salt = 12309784617
+hash_field_salt = "12309784617"
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -57,6 +57,8 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'restaurant_info.urls'
 
+LOGIN_URL = '/SignIn/'
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -80,8 +82,15 @@ WSGI_APPLICATION = 'restaurant_info.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pruebas_app',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '',
+        'OPTIONS': {
+            'sql_mode': 'STRICT_TRANS_TABLES',
+        }
     }
 }
 
@@ -155,6 +164,16 @@ SIMPLE_JWT = {
     "SLIDING_TOKEN_OBTAIN_SERIALIZER": "rest_framework_simplejwt.serializers.TokenObtainSlidingSerializer",
     "SLIDING_TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSlidingSerializer",
 }
+
+#Email configuration
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_SSL = False
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'sebastian.avenda32@gmail.com'
+EMAIL_HOST_PASSWORD = 'vgtp gzpl ftzs mndw'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

@@ -14,9 +14,3 @@ class User_Registration(forms.Form):
     email = forms.EmailField(required=True)
     password = forms.CharField(min_length=8, required=True, widget=forms.PasswordInput)
     password_confirmation = forms.CharField(min_length=8, required=True, widget=forms.PasswordInput)
-
-
-#Email verification form
-class User_verification(forms.Form):
-    code = forms.IntegerField(required=True, min_value=99999, max_value=999999)
-        

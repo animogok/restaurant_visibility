@@ -11,8 +11,12 @@
             {% csrf_token %}
             {{form.as_p}}
             {% block error_password %}
-                {% if error %}
+                {% if error_1 %}
                     <p>password mismatch</p>
+                {% elif error_2 %}
+                    <p>Username: <b>{{user}}</b> it's taken. </br>
+                       Please enter a valid username.
+                    </p>
                 {% endif %}
             {% endblock error_password %}
             <button class="submit" type="submit">Create Account</button>

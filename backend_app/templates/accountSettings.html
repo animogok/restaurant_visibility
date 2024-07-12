@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <aside>
+        <h1>MENU</h1>
+    </aside>
+
+    <div name="verification">
+        {% if verification == False %}
+        <form method = "POST">
+            {% csrf_token %}
+            <label for="code">Verification Code</label><br>
+            <input type="text" name="code" id="code" required><br>
+            <button class="submit" type="submit" name="form_verification">Verify</button>
+        </form>
+        {{message_verification}}
+        {% elif error_email %}
+            {{message}}
+        {% elif verification %}
+            {{message_verificated}}
+        {% elif error_verification %}
+            <p>Something has ocurred during the verification, check this details:
+                    1. Code mismatch
+                    2. Code has expired
+            </p>
+        {% endif %}
+        {{message_confirmation}}
+    </div>
+</body>
+</html>

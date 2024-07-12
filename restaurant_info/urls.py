@@ -17,6 +17,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from backend_app import views as vwB
+from frontend import views as vwF
 
 #This imports will be required for working jwt encoding and decoding to the email verifications implementation
 from rest_framework_simplejwt.views import (
@@ -26,7 +27,10 @@ from rest_framework_simplejwt.views import (
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', vwF.home_view, name="home"),
     path('SignUp/', vwB.AsyncRegisterView.as_view(), name="register"),
+    path('SignIn/', vwB.AsyncLoginView.as_view(), name = "login"),
+    path('user-settings/', vwB.AsyncAccountSettings.as_view(), name ="settings"),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
